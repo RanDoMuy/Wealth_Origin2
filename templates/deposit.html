@@ -1,0 +1,112 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link href="{% static 'fontawesome-free-6.4.0-web/css/all.css' %}" rel="stylesheet">
+	<link rel="shortcut icon" href="{% static 'images/logo.svg' %}" type="image/x-icon">
+	<link rel="stylesheet" href="{% static 'css/deposit_withdraw.css' %}">
+	<script src="{% static 'scripts/script.js' %}"></script>
+
+    <title>Wealth Origin - Deposit</title>
+</head>
+<body>
+    <nav id="navbar">
+        <button onclick="openNav()">&#9776;&nbsp;&nbsp;&nbsp;Deposit</button>
+	</nav>
+
+	<div id="SideNav" class="sidenav">
+		<a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+		<center><img src="{% static 'images/pic.png' %}"/></center>
+		<center><label>{{ user.full_name }}</label></center>
+		<hr>
+		<a href="{% url 'dashboard' %}"><i class="fa-solid fa-house" style="font-size: 20px;"></i>&nbsp&nbsp Dashboard</a>
+		<a href="{% url 'deposit' %}"><i class="fa-solid fa-building-columns" style="font-size: 20px;"></i>&nbsp&nbsp Deposit</a>
+		<a href="{% url 'invest' %}"><i class="fa-solid fa-chart-line" style="font-size: 20px;"></i>&nbsp&nbsp Investment Plan</a>
+		<a href="{% url 'withdraw' %}"><i class="fa-solid fa-square-arrow-up-right" style="font-size: 20px;"></i >&nbsp&nbsp Withdrawal</a>
+		<a href="{% url 'faq' %}"><i class="fa-solid fa-circle-question" style="font-size: 20px;"></i>&nbsp&nbsp FAQ</a>
+		<a href="{% url 'profile' %}"><i class="fa-solid fa-user" style="font-size: 20px;"></i>&nbsp&nbsp Profile</a>
+		<a href="{% url 'logout' %}"><i class="fa-solid fa-right-from-bracket" style="font-size: 20px;"></i>&nbsp&nbsp Logout</a>
+	</div>
+
+    <div id="content">
+		<form id="deposit" class="box" method="POST">{% csrf_token %}
+			<header class="header">Deposit Request</header>
+			<hr style="width: 100%;">
+			Select Deposit Method
+			<select>
+				<option class="option">Bitcoin</option>
+			</select>
+			Enter Deposit Amount($)
+			<input type="number" placeholder="$Amount" name="amount" required>
+			<input style="text-align: center; text-decoration: none; border-radius: 50px; background-color: var(--eerie-black-1); color: white; padding: 4%; width: 50%; border-style: none;" id="a" type="submit" value="Deposit" onclick="openmodal()">
+		</form>
+
+
+        <div class="box">
+			<header class="header">Deposit History</header>
+			<hr style="width: 100%;">
+			<table>
+				<tr>
+					<th>Amount</th>
+					<th>Method</th>
+					<th>Status</th>
+					<th>Date</th>
+				</tr>
+				{% for deposit in deposits %}
+				<tr>
+					<td>{{ deposit.amount }}</td>
+					<td>{{ deposit.method }}</td>
+					<td>{{ deposit.status }}</td>
+					<td>{{ deposit.timestamp }}</td>
+				</tr>
+				{% endfor %}
+			</table>
+		</div>
+
+		<div id="myModal" class="modal">
+			<div class="modal-content">
+
+				<span class="close" onclick="closemodal()">&times;</span>
+				<div id="timer">60:00</div>
+				<script>
+					var timeLimit = 3600;
+					var timer = document.getElementById('timer');
+					var secondsLeft = timeLimit;
+			
+					function countdown() {
+						var minutes = Math.floor(secondsLeft / 60);
+						var seconds = secondsLeft % 60;
+			
+						// Add leading zeros if necessary
+						minutes = minutes < 10 ? "0" + minutes : minutes;
+						seconds = seconds < 10 ? "0" + seconds : seconds;
+			
+						// Update the timer
+						timer.innerText = minutes + ":" + seconds;
+			
+						// Decrease the seconds left
+						secondsLeft--;
+			
+						if (secondsLeft < 0) {
+							clearInterval(interval);
+							timer.innerHTML = "00:00";
+							alert("Countdown finished!");
+						}
+					}
+					var interval = setInterval(countdown, 1000);
+				</script>
+
+				<header>YOUR ORDER HAS BEEN PLACED, 
+				TO COMPLETE, PLEASE SEND THE EXACT AMOUNT TO THE WALLET ADDRESS BELOW</header>
+			
+				<label class="label" id="addr">bc1qeprh46wkvt9q5heqa423zswqrqzqhdpa2vlrhz</label>
+				<button onclick="copyToClipboard()">Copy</button>
+				<center><text>Your balance will be updated as soon as we receive confirmations from the crypto network.</text></center>
+			</div>
+		</div>
+	</div>
+    
+</body>
+</html>

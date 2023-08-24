@@ -1,0 +1,277 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link href="{% static 'fontawesome-free-6.4.0-web/css/all.css' %}" rel="stylesheet">
+	<link rel="shortcut icon" href="{% static 'images/logo.svg' %}" type="image/x-icon">
+	<link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
+	<script src="{% static 'scripts/script.js' %}"></script>
+	<title>Wealth Origin- Dashboard</title>
+</head>
+
+<body>
+    <nav id="navbar">
+        <button onclick="openNav()">&#9776;&nbsp;&nbsp;&nbsp;Trade center</button>
+	</nav>
+
+	<div id="SideNav" class="sidenav">
+		<a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+		<center><img src="{% static 'images/pic.png' %}"/></center>
+		<center><label>{{ user.full_name }}</label></center>
+		<hr>
+		<a href="{% url 'dashboard' %}"><i class="fa-solid fa-house" style="font-size: 20px;"></i>&nbsp&nbsp Dashboard</a>
+		<a href="{% url 'deposit' %}"><i class="fa-solid fa-building-columns" style="font-size: 20px;"></i>&nbsp&nbsp Deposit</a>
+		<a href="{% url 'invest' %}"><i class="fa-solid fa-chart-line" style="font-size: 20px;"></i>&nbsp&nbsp Investment Plan</a>
+		<a href="{% url 'withdraw' %}"><i class="fa-solid fa-square-arrow-up-right" style="font-size: 20px;"></i >&nbsp&nbsp Withdrawal</a>
+		<a href="{% url 'faq' %}"><i class="fa-solid fa-circle-question" style="font-size: 20px;"></i>&nbsp&nbsp FAQ</a>
+		<a href="{% url 'profile' %}"><i class="fa-solid fa-user" style="font-size: 20px;"></i>&nbsp&nbsp Profile</a>
+		<a href="{% url 'logout' %}"><i class="fa-solid fa-right-from-bracket" style="font-size: 20px;"></i>&nbsp&nbsp Logout</a>
+	</div>
+
+
+
+	<!-- TradingView Widget BEGIN -->
+	<div class="tradingview-widget-container">
+		<div class="tradingview-widget-container__widget"></div>
+		<div class="tradingview-widget-copyright"><a href="https://www.tradingview.com/" rel="noopener nofollow" target="_blank"><span class="blue-text">Track all markets on TradingView</span></a></div>
+		<script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-ticker-tape.js" async>{
+			"symbols": [
+				{
+					"proName": "FOREXCOM:SPXUSD",
+					"title": "S&P 500"
+				},
+				{
+					"proName": "FOREXCOM:NSXUSD",
+					"title": "US 100"
+				},
+				{
+					"proName": "FX_IDC:EURUSD",
+					"title": "EUR/USD"
+				},
+				{
+					"proName": "BITSTAMP:BTCUSD",
+					"title": "Bitcoin"
+				},
+				{
+					"proName": "BITSTAMP:ETHUSD",
+					"title": "Ethereum"
+				},
+				{
+				"description": "TSLA",
+				"proName": "NASDAQ:TSLA"
+				}
+
+			],
+			"showSymbolLogo": true,
+			"colorTheme": "light",
+			"isTransparent": false,
+			"displayMode": "adaptive",
+			"locale": "en"
+		}
+		</script>
+	</div>
+ 	<!-- TradingView Widget END -->
+
+	<!-- The Modal -->
+	<div id="myModal" class="modal">
+		<!-- Modal content -->
+	<div class="modal-content">
+
+		<span class="close" onclick="closemodal()">&times;</span>
+		<header>UPLOAD AN IMAGE TO CONFIRM YOUR IDENTITY AND VERIFY YOUR ACCOUNT </header>
+		<ul>
+			<li>Passport</li>
+			<li>Drivers license</li>
+		</ul>
+		
+		<form action="" method="POST" enctype="multipart/form-data">{% csrf_token %}
+			<input id="fi" type="file" name="image">
+
+			<input id="submit" type="submit">
+		</form>
+		
+	</div>
+	</div>
+	
+	<center><a id="verify" onclick="openmodal()" style="color: white; display: {{ dd }}; width: 90%; padding: 2%; background-color: red; text-align: center;">{{ message }}</a></center>
+	<div id="dash_row1">
+		<div id="balance">
+			<div class="card">
+				<div>
+					<header>DEPOSIT BALANCE</header>
+					<h1>${{ user.deposit_balance }}</h1>
+				</div>
+				
+				<img src="{% static 'images/2.png' %}">
+			</div>
+		
+
+			<div class="card">
+				<div>
+					<header>PROFIT BALANCE</header>
+					<h1>${{ user.profit_balance }}</h1>
+				</div>
+
+				<img src="{% static 'images/4.png' %}">
+			</div>
+		</div>
+
+		<div id="status">
+			<div class="card">
+				<div>
+					<header>ACCOUNT PLAN</header>
+					<h2>{{ user.trading_plan }}</h2>
+				</div>
+				<img src="{% static 'images/3.png' %}">
+			</div>
+
+			<div class="card">
+				<div>
+					<header>TRADE STATUS</header>
+					<h2>{{ user.trade_status }}</h2>
+				</div>
+			</div>
+		</div>
+
+		<div id="links">
+			<a href="{% url 'deposit' %}">
+				<i class="fa-solid fa-square-plus" style="font-size: 40px;"></i>
+				Deposit 
+			</a>
+
+			<a href="{% url 'invest' %}">
+				<i class="fa-solid fa-chart-line" style="font-size: 40px;"></i>
+				Get Plan
+			</a>
+
+			<a href="{% url 'withdraw' %}">
+				<i class="fa-solid fa-square-arrow-up-right" style="font-size: 40px;"></i>
+				Withdraw
+			</a>	
+		</div>
+	</div>
+
+	<div class="container py-5" style="margin-top: 5%; margin-bottom: 5%;">
+		<div class="section_title text-center mb-5">
+			<h2 class="wow slideInUp text-white" data-wow-duration="1s" style="visibility: visible; animation-duration: 1s; animation-name: slideInUp;">Crypto <span class="text-primary">Market</span></h2>
+		</div>
+		<div style="height: 413px; padding: 0px; margin: 0px; width: 100%; visibility: visible; animation-name: slideInLeft;" class="wow slideInLeft">
+			<iframe src="https://widget.coinlib.io/widget?type=full_v2&amp;theme=dark&amp;cnt=6&amp;pref_coin_id=1505&amp;graph=yes" width="100%" height="409px" scrolling="auto" marginwidth="0" marginheight="0" frameborder="0" border="0" style="border:0;margin:0;padding:0;"></iframe>
+		</div>
+	</div>
+
+
+	<div class="ccc-widget ccc-tiles" style="background: rgb(255, 255, 255); border-radius: 4px 4px 0px 0px;"><div style="background: rgb(255, 255, 255); border-radius: 4px 4px 0px 0px; border: 1px solid rgb(224, 230, 239);"><div class="header-div" style="background: rgb(246, 249, 251); font-weight: bold; font-size: 20px; line-height: 30px; text-align: left; height: 50px; padding: 10px; border-radius: 4px 4px 0px 0px; border-bottom: 1px solid rgb(224, 230, 239); box-sizing: border-box;"><a href="https://www.cryptocompare.com/coins/btc/overview" rel="nofollow" target="_blank" style="color: #000; text-decoration: none;"> <img src="https://www.cryptocompare.com/media/37746251/btc.png?width=26&amp;height=26&amp;mode=crop&amp;center=0.0,0.0" style="width: 26px; height: 26px; vertical-align: middle; margin-bottom: 3px; border: 0; border: 0; position: inherit; max-width: inherit; left: inherit; right: inherit; top: inherit; bottom: inherit;"> BTC</a></div><a rel="nofollow" href="https://www.cryptocompare.com/coins/btc/overview/usd" title="BTC - 0 Price and market cap" target="_blank" style="background: rgb(255, 255, 255); border-right: 1px solid rgb(224, 230, 239); border-bottom: 1px solid rgb(224, 230, 239); color: rgb(0, 0, 0); text-decoration: none; display: block; float: left; font-size: 16px; width: 50%; height: 78px; text-align: center; font-weight: 700; line-height: 25px; padding-left: 10px; box-sizing: border-box;"><div style="line-height: 35px; font-size: 14px; font-weight: bold; color: #A11B0A;">-1.07% <img src="data:image/svg+xml;utf8;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iaXNvLTg4NTktMSI/Pgo8IS0tIEdlbmVyYXRvcjogQWRvYmUgSWxsdXN0cmF0b3IgMTkuMC4wLCBTVkcgRXhwb3J0IFBsdWctSW4gLiBTVkcgVmVyc2lvbjogNi4wMCBCdWlsZCAwKSAgLS0+CjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgdmVyc2lvbj0iMS4xIiBpZD0iTGF5ZXJfMSIgeD0iMHB4IiB5PSIwcHgiIHZpZXdCb3g9IjAgMCAzODYuMjU3IDM4Ni4yNTciIHN0eWxlPSJlbmFibGUtYmFja2dyb3VuZDpuZXcgMCAwIDM4Ni4yNTcgMzg2LjI1NzsiIHhtbDpzcGFjZT0icHJlc2VydmUiIHdpZHRoPSIxNnB4IiBoZWlnaHQ9IjE2cHgiPgo8cG9seWdvbiBwb2ludHM9IjAsOTYuODc5IDE5My4xMjksMjg5LjM3OSAzODYuMjU3LDk2Ljg3OSAiIGZpbGw9IiNhMTFiMGEiLz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPC9zdmc+Cg==" style="width: 12px; height: 12px; vertical-align: inherit; border: 0; position: inherit; max-width: inherit; left: inherit; right: inherit; top: inherit; bottom: inherit;"></div><span style="font-size: 11px;">USD</span> 30,869.1</a><a rel="nofollow" href="https://www.cryptocompare.com/coins/btc/overview/eur" title="BTC - 1 Price and market cap" target="_blank" style="background: rgb(255, 255, 255); border-bottom: 1px solid rgb(224, 230, 239); color: rgb(0, 0, 0); text-decoration: none; display: block; float: left; font-size: 16px; width: 50%; height: 78px; text-align: center; font-weight: 700; line-height: 25px; padding-left: 10px; box-sizing: border-box;"><div style="line-height: 35px; font-size: 14px; font-weight: bold; color: #A11B0A;">-0.78% <img src="data:image/svg+xml;utf8;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iaXNvLTg4NTktMSI/Pgo8IS0tIEdlbmVyYXRvcjogQWRvYmUgSWxsdXN0cmF0b3IgMTkuMC4wLCBTVkcgRXhwb3J0IFBsdWctSW4gLiBTVkcgVmVyc2lvbjogNi4wMCBCdWlsZCAwKSAgLS0+CjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgdmVyc2lvbj0iMS4xIiBpZD0iTGF5ZXJfMSIgeD0iMHB4IiB5PSIwcHgiIHZpZXdCb3g9IjAgMCAzODYuMjU3IDM4Ni4yNTciIHN0eWxlPSJlbmFibGUtYmFja2dyb3VuZDpuZXcgMCAwIDM4Ni4yNTcgMzg2LjI1NzsiIHhtbDpzcGFjZT0icHJlc2VydmUiIHdpZHRoPSIxNnB4IiBoZWlnaHQ9IjE2cHgiPgo8cG9seWdvbiBwb2ludHM9IjAsOTYuODc5IDE5My4xMjksMjg5LjM3OSAzODYuMjU3LDk2Ljg3OSAiIGZpbGw9IiNhMTFiMGEiLz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPC9zdmc+Cg==" style="width: 12px; height: 12px; vertical-align: inherit; border: 0; position: inherit; max-width: inherit; left: inherit; right: inherit; top: inherit; bottom: inherit;"></div><span style="font-size: 11px;">EUR</span> 28,389.5</a><a rel="nofollow" href="https://www.cryptocompare.com/coins/btc/overview/cny" title="BTC - 2 Price and market cap" target="_blank" style="background: rgb(255, 255, 255); border-right: 1px solid rgb(224, 230, 239); border-bottom: 1px solid rgb(224, 230, 239); color: rgb(0, 0, 0); text-decoration: none; display: block; float: left; font-size: 16px; width: 50%; height: 78px; text-align: center; font-weight: 700; line-height: 25px; padding-left: 10px; box-sizing: border-box;"><div style="line-height: 35px; font-size: 14px; font-weight: bold; color: #2C4C76;">0.00% <img src="data:image/svg+xml;utf8;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iaXNvLTg4NTktMSI/Pgo8IS0tIEdlbmVyYXRvcjogQWRvYmUgSWxsdXN0cmF0b3IgMTkuMC4wLCBTVkcgRXhwb3J0IFBsdWctSW4gLiBTVkcgVmVyc2lvbjogNi4wMCBCdWlsZCAwKSAgLS0+CjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgdmVyc2lvbj0iMS4xIiBpZD0iTGF5ZXJfMSIgeD0iMHB4IiB5PSIwcHgiIHZpZXdCb3g9IjAgMCAzODYuMjU3IDM4Ni4yNTciIHN0eWxlPSJlbmFibGUtYmFja2dyb3VuZDpuZXcgMCAwIDM4Ni4yNTcgMzg2LjI1NzsiIHhtbDpzcGFjZT0icHJlc2VydmUiIHdpZHRoPSIxNnB4IiBoZWlnaHQ9IjE2cHgiPgo8cG9seWdvbiBwb2ludHM9IjE5My4xMjksOTYuODc5IDAsMjg5LjM3OSAzODYuMjU3LDI4OS4zNzkgIiBmaWxsPSIjM2Q5NDAwIi8+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+Cjwvc3ZnPgo=" style="width: 12px; height: 12px; vertical-align: inherit; border: 0; position: inherit; max-width: inherit; left: inherit; right: inherit; top: inherit; bottom: inherit;"></div><span style="font-size: 11px;">CNY</span> 172,521.3</a><a rel="nofollow" href="https://www.cryptocompare.com/coins/btc/overview/gbp" title="BTC - 3 Price and market cap" target="_blank" style="background: rgb(255, 255, 255); border-bottom: 1px solid rgb(224, 230, 239); color: rgb(0, 0, 0); text-decoration: none; display: block; float: left; font-size: 16px; width: 50%; height: 78px; text-align: center; font-weight: 700; line-height: 25px; padding-left: 10px; box-sizing: border-box;"><div style="line-height: 35px; font-size: 14px; font-weight: bold; color: #A11B0A;">-1.23% <img src="data:image/svg+xml;utf8;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iaXNvLTg4NTktMSI/Pgo8IS0tIEdlbmVyYXRvcjogQWRvYmUgSWxsdXN0cmF0b3IgMTkuMC4wLCBTVkcgRXhwb3J0IFBsdWctSW4gLiBTVkcgVmVyc2lvbjogNi4wMCBCdWlsZCAwKSAgLS0+CjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgdmVyc2lvbj0iMS4xIiBpZD0iTGF5ZXJfMSIgeD0iMHB4IiB5PSIwcHgiIHZpZXdCb3g9IjAgMCAzODYuMjU3IDM4Ni4yNTciIHN0eWxlPSJlbmFibGUtYmFja2dyb3VuZDpuZXcgMCAwIDM4Ni4yNTcgMzg2LjI1NzsiIHhtbDpzcGFjZT0icHJlc2VydmUiIHdpZHRoPSIxNnB4IiBoZWlnaHQ9IjE2cHgiPgo8cG9seWdvbiBwb2ludHM9IjAsOTYuODc5IDE5My4xMjksMjg5LjM3OSAzODYuMjU3LDk2Ljg3OSAiIGZpbGw9IiNhMTFiMGEiLz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPC9zdmc+Cg==" style="width: 12px; height: 12px; vertical-align: inherit; border: 0; position: inherit; max-width: inherit; left: inherit; right: inherit; top: inherit; bottom: inherit;"></div><span style="font-size: 11px;">GBP</span> 24,308.9</a><a rel="nofollow" href="https://www.cryptocompare.com/coins/btc/overview/gold" title="BTC - 4 Price and market cap" target="_blank" style="background: rgb(255, 255, 255); border-right: 1px solid rgb(224, 230, 239); border-bottom: 1px solid rgb(224, 230, 239); color: rgb(0, 0, 0); text-decoration: none; display: block; float: left; font-size: 16px; width: 50%; height: 78px; text-align: center; font-weight: 700; line-height: 25px; padding-left: 10px; box-sizing: border-box;"><div style="line-height: 35px; font-size: 14px; font-weight: bold; color: #2C4C76;">0.00% <img src="data:image/svg+xml;utf8;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iaXNvLTg4NTktMSI/Pgo8IS0tIEdlbmVyYXRvcjogQWRvYmUgSWxsdXN0cmF0b3IgMTkuMC4wLCBTVkcgRXhwb3J0IFBsdWctSW4gLiBTVkcgVmVyc2lvbjogNi4wMCBCdWlsZCAwKSAgLS0+CjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgdmVyc2lvbj0iMS4xIiBpZD0iTGF5ZXJfMSIgeD0iMHB4IiB5PSIwcHgiIHZpZXdCb3g9IjAgMCAzODYuMjU3IDM4Ni4yNTciIHN0eWxlPSJlbmFibGUtYmFja2dyb3VuZDpuZXcgMCAwIDM4Ni4yNTcgMzg2LjI1NzsiIHhtbDpzcGFjZT0icHJlc2VydmUiIHdpZHRoPSIxNnB4IiBoZWlnaHQ9IjE2cHgiPgo8cG9seWdvbiBwb2ludHM9IjE5My4xMjksOTYuODc5IDAsMjg5LjM3OSAzODYuMjU3LDI4OS4zNzkgIiBmaWxsPSIjM2Q5NDAwIi8+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+Cjwvc3ZnPgo=" style="width: 12px; height: 12px; vertical-align: inherit; border: 0; position: inherit; max-width: inherit; left: inherit; right: inherit; top: inherit; bottom: inherit;"></div><span style="font-size: 11px;">GOLD</span> 169.49</a><a rel="nofollow" href="https://www.cryptocompare.com/coins/btc/overview/jpy" title="BTC - 5 Price and market cap" target="_blank" style="background: rgb(255, 255, 255); border-bottom: 1px solid rgb(224, 230, 239); color: rgb(0, 0, 0); text-decoration: none; display: block; float: left; font-size: 16px; width: 50%; height: 78px; text-align: center; font-weight: 700; line-height: 25px; padding-left: 10px; box-sizing: border-box;"><div style="line-height: 35px; font-size: 14px; font-weight: bold; color: #A11B0A;">-1.00% <img src="data:image/svg+xml;utf8;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iaXNvLTg4NTktMSI/Pgo8IS0tIEdlbmVyYXRvcjogQWRvYmUgSWxsdXN0cmF0b3IgMTkuMC4wLCBTVkcgRXhwb3J0IFBsdWctSW4gLiBTVkcgVmVyc2lvbjogNi4wMCBCdWlsZCAwKSAgLS0+CjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgdmVyc2lvbj0iMS4xIiBpZD0iTGF5ZXJfMSIgeD0iMHB4IiB5PSIwcHgiIHZpZXdCb3g9IjAgMCAzODYuMjU3IDM4Ni4yNTciIHN0eWxlPSJlbmFibGUtYmFja2dyb3VuZDpuZXcgMCAwIDM4Ni4yNTcgMzg2LjI1NzsiIHhtbDpzcGFjZT0icHJlc2VydmUiIHdpZHRoPSIxNnB4IiBoZWlnaHQ9IjE2cHgiPgo8cG9seWdvbiBwb2ludHM9IjAsOTYuODc5IDE5My4xMjksMjg5LjM3OSAzODYuMjU3LDk2Ljg3OSAiIGZpbGw9IiNhMTFiMGEiLz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPC9zdmc+Cg==" style="width: 12px; height: 12px; vertical-align: inherit; border: 0; position: inherit; max-width: inherit; left: inherit; right: inherit; top: inherit; bottom: inherit;"></div><span style="font-size: 11px;">JPY</span> 4,473,998.9</a><a rel="nofollow" href="https://www.cryptocompare.com/coins/btc/overview/aud" title="BTC - 6 Price and market cap" target="_blank" style="background: rgb(255, 255, 255); border-right: 1px solid rgb(224, 230, 239); border-bottom: 1px solid rgb(224, 230, 239); color: rgb(0, 0, 0); text-decoration: none; display: block; float: left; font-size: 16px; width: 50%; height: 78px; text-align: center; font-weight: 700; line-height: 25px; padding-left: 10px; box-sizing: border-box;"><div style="line-height: 35px; font-size: 14px; font-weight: bold; color: #A11B0A;">-1.01% <img src="data:image/svg+xml;utf8;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iaXNvLTg4NTktMSI/Pgo8IS0tIEdlbmVyYXRvcjogQWRvYmUgSWxsdXN0cmF0b3IgMTkuMC4wLCBTVkcgRXhwb3J0IFBsdWctSW4gLiBTVkcgVmVyc2lvbjogNi4wMCBCdWlsZCAwKSAgLS0+CjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgdmVyc2lvbj0iMS4xIiBpZD0iTGF5ZXJfMSIgeD0iMHB4IiB5PSIwcHgiIHZpZXdCb3g9IjAgMCAzODYuMjU3IDM4Ni4yNTciIHN0eWxlPSJlbmFibGUtYmFja2dyb3VuZDpuZXcgMCAwIDM4Ni4yNTcgMzg2LjI1NzsiIHhtbDpzcGFjZT0icHJlc2VydmUiIHdpZHRoPSIxNnB4IiBoZWlnaHQ9IjE2cHgiPgo8cG9seWdvbiBwb2ludHM9IjAsOTYuODc5IDE5My4xMjksMjg5LjM3OSAzODYuMjU3LDk2Ljg3OSAiIGZpbGw9IiNhMTFiMGEiLz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPC9zdmc+Cg==" style="width: 12px; height: 12px; vertical-align: inherit; border: 0; position: inherit; max-width: inherit; left: inherit; right: inherit; top: inherit; bottom: inherit;"></div><span style="font-size: 11px;">AUD</span> 46,211.2</a><a rel="nofollow" href="https://www.cryptocompare.com/coins/btc/overview/cad" title="BTC - 7 Price and market cap" target="_blank" style="background: rgb(255, 255, 255); border-bottom: 1px solid rgb(224, 230, 239); color: rgb(0, 0, 0); text-decoration: none; display: block; float: left; font-size: 16px; width: 50%; height: 78px; text-align: center; font-weight: 700; line-height: 25px; padding-left: 10px; box-sizing: border-box;"><div style="line-height: 35px; font-size: 14px; font-weight: bold; color: #A11B0A;">-1.26% <img src="data:image/svg+xml;utf8;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iaXNvLTg4NTktMSI/Pgo8IS0tIEdlbmVyYXRvcjogQWRvYmUgSWxsdXN0cmF0b3IgMTkuMC4wLCBTVkcgRXhwb3J0IFBsdWctSW4gLiBTVkcgVmVyc2lvbjogNi4wMCBCdWlsZCAwKSAgLS0+CjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgdmVyc2lvbj0iMS4xIiBpZD0iTGF5ZXJfMSIgeD0iMHB4IiB5PSIwcHgiIHZpZXdCb3g9IjAgMCAzODYuMjU3IDM4Ni4yNTciIHN0eWxlPSJlbmFibGUtYmFja2dyb3VuZDpuZXcgMCAwIDM4Ni4yNTcgMzg2LjI1NzsiIHhtbDpzcGFjZT0icHJlc2VydmUiIHdpZHRoPSIxNnB4IiBoZWlnaHQ9IjE2cHgiPgo8cG9seWdvbiBwb2ludHM9IjAsOTYuODc5IDE5My4xMjksMjg5LjM3OSAzODYuMjU3LDk2Ljg3OSAiIGZpbGw9IiNhMTFiMGEiLz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPC9zdmc+Cg==" style="width: 12px; height: 12px; vertical-align: inherit; border: 0; position: inherit; max-width: inherit; left: inherit; right: inherit; top: inherit; bottom: inherit;"></div><span style="font-size: 11px;">CAD</span> 40,788.7</a><a rel="nofollow" href="https://www.cryptocompare.com/coins/btc/overview/chf" title="BTC - 8 Price and market cap" target="_blank" style="background: rgb(255, 255, 255); border-right: 1px solid rgb(224, 230, 239); border-bottom: 1px solid rgb(224, 230, 239); color: rgb(0, 0, 0); text-decoration: none; display: block; float: left; font-size: 16px; width: 50%; height: 78px; text-align: center; font-weight: 700; line-height: 25px; padding-left: 10px; box-sizing: border-box;"><div style="line-height: 35px; font-size: 14px; font-weight: bold; color: #A11B0A;">-0.94% <img src="data:image/svg+xml;utf8;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iaXNvLTg4NTktMSI/Pgo8IS0tIEdlbmVyYXRvcjogQWRvYmUgSWxsdXN0cmF0b3IgMTkuMC4wLCBTVkcgRXhwb3J0IFBsdWctSW4gLiBTVkcgVmVyc2lvbjogNi4wMCBCdWlsZCAwKSAgLS0+CjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgdmVyc2lvbj0iMS4xIiBpZD0iTGF5ZXJfMSIgeD0iMHB4IiB5PSIwcHgiIHZpZXdCb3g9IjAgMCAzODYuMjU3IDM4Ni4yNTciIHN0eWxlPSJlbmFibGUtYmFja2dyb3VuZDpuZXcgMCAwIDM4Ni4yNTcgMzg2LjI1NzsiIHhtbDpzcGFjZT0icHJlc2VydmUiIHdpZHRoPSIxNnB4IiBoZWlnaHQ9IjE2cHgiPgo8cG9seWdvbiBwb2ludHM9IjAsOTYuODc5IDE5My4xMjksMjg5LjM3OSAzODYuMjU3LDk2Ljg3OSAiIGZpbGw9IiNhMTFiMGEiLz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPC9zdmc+Cg==" style="width: 12px; height: 12px; vertical-align: inherit; border: 0; position: inherit; max-width: inherit; left: inherit; right: inherit; top: inherit; bottom: inherit;"></div><span style="font-size: 11px;">CHF</span> 27,723.6</a><a rel="nofollow" href="https://www.cryptocompare.com/coins/btc/overview/czk" title="BTC - 9 Price and market cap" target="_blank" style="background: rgb(255, 255, 255); border-bottom: 1px solid rgb(224, 230, 239); color: rgb(0, 0, 0); text-decoration: none; display: block; float: left; font-size: 16px; width: 50%; height: 78px; text-align: center; font-weight: 700; line-height: 25px; padding-left: 10px; box-sizing: border-box;"><div style="line-height: 35px; font-size: 14px; font-weight: bold; color: #A11B0A;">-0.88% <img src="data:image/svg+xml;utf8;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iaXNvLTg4NTktMSI/Pgo8IS0tIEdlbmVyYXRvcjogQWRvYmUgSWxsdXN0cmF0b3IgMTkuMC4wLCBTVkcgRXhwb3J0IFBsdWctSW4gLiBTVkcgVmVyc2lvbjogNi4wMCBCdWlsZCAwKSAgLS0+CjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgdmVyc2lvbj0iMS4xIiBpZD0iTGF5ZXJfMSIgeD0iMHB4IiB5PSIwcHgiIHZpZXdCb3g9IjAgMCAzODYuMjU3IDM4Ni4yNTciIHN0eWxlPSJlbmFibGUtYmFja2dyb3VuZDpuZXcgMCAwIDM4Ni4yNTcgMzg2LjI1NzsiIHhtbDpzcGFjZT0icHJlc2VydmUiIHdpZHRoPSIxNnB4IiBoZWlnaHQ9IjE2cHgiPgo8cG9seWdvbiBwb2ludHM9IjAsOTYuODc5IDE5My4xMjksMjg5LjM3OSAzODYuMjU3LDk2Ljg3OSAiIGZpbGw9IiNhMTFiMGEiLz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPC9zdmc+Cg==" style="width: 12px; height: 12px; vertical-align: inherit; border: 0; position: inherit; max-width: inherit; left: inherit; right: inherit; top: inherit; bottom: inherit;"></div><span style="font-size: 11px;">CZK</span> 673,580.0</a><div style="clear: both; margin: 0px; padding: 0px; height: 0px;"></div></div></div>
+
+
+	
+
+	<center><div class="row mx-3" style="margin-top: 5%;">
+		<div class="card col-md-12 col-lg-12 col-xl-12" style="width: 90%;">
+		  <!-- TradingView Widget BEGIN -->
+			<div class="tradingview-widget-container" style="width: 100%; height: 400px;">
+				<iframe scrolling="no" allowtransparency="true" frameborder="0" src="https://s.tradingview.com/embed-widget/timeline/?locale=en#%7B%22colorTheme%22%3A%22light%22%2C%22isTransparent%22%3Afalse%2C%22displayMode%22%3A%22adaptive%22%2C%22width%22%3A%22100%25%22%2C%22height%22%3A400%2C%22utm_source%22%3A%22zenithcryptotrade.com%22%2C%22utm_medium%22%3A%22widget%22%2C%22utm_campaign%22%3A%22timeline%22%7D" style="box-sizing: border-box; display: block; height: 400px; width: 100%;"></iframe>
+				
+				<style>
+					.tradingview-widget-copyright {
+						font-size: 13px !important;
+						line-height: 32px !important;
+						text-align: center !important;
+						vertical-align: middle !important;
+						/* @mixin sf-pro-display-font; */
+						font-family: -apple-system, BlinkMacSystemFont, 'Trebuchet MS', Roboto, Ubuntu, sans-serif !important;
+						color: #9db2bd !important;
+					}
+
+					.tradingview-widget-copyright .blue-text {
+						color: #2962FF !important;
+					}
+
+					.tradingview-widget-copyright a {
+						text-decoration: none !important;
+						color: #9db2bd !important;
+					}
+
+					.tradingview-widget-copyright a:visited {
+						color: #9db2bd !important;
+					}
+
+					.tradingview-widget-copyright a:hover .blue-text {
+						color: #1E53E5 !important;
+					}
+
+					.tradingview-widget-copyright a:active .blue-text {
+						color: #1848CC !important;
+					}
+
+					.tradingview-widget-copyright a:visited .blue-text {
+						color: #2962FF !important;
+					}
+				</style>
+			</div>
+		  <!-- TradingView Widget END -->
+		</div>
+	</div></center>
+
+	
+	<div id="intro">
+		<h2>Wealth Origin Markets</h2>
+		<article>A breif overview of our trading instruments and their performances over time</article>
+	</div>
+
+	<div class="tradingview-widget-container">
+		<div id="technical-analysis">
+			<div id="tradingview_2726a-wrapper" style="position: relative;box-sizing: content-box;width: 600px;height: 500px;margin: 0 auto !important;padding: 0 !important;font-family: -apple-system, BlinkMacSystemFont, 'Trebuchet MS', Roboto, Ubuntu, sans-serif;">
+				<div style="width: 600px;height: 500px;background: transparent;padding: 0 !important;">
+					<iframe id="tradingview_2726a" src="https://s.tradingview.com/widgetembed/?frameElementId=tradingview_2726a&amp;symbol=AAPL&amp;interval=D&amp;hidesidetoolbar=0&amp;symboledit=1&amp;saveimage=0&amp;toolbarbg=f1f3f6&amp;studies=ROC%40tv-basicstudies%1FStochasticRSI%40tv-basicstudies%1FMASimple%40tv-basicstudies&amp;theme=Dark&amp;style=1&amp;timezone=exchange&amp;withdateranges=1&amp;showpopupbutton=1&amp;studies_overrides=%7B%7D&amp;overrides=%7B%7D&amp;enabled_features=%5B%5D&amp;disabled_features=%5B%5D&amp;showpopupbutton=1&amp;locale=en&amp;utm_source=upwaveoptions.com&amp;utm_medium=widget&amp;utm_campaign=chart&amp;utm_term=AAPL#%7B%22page-uri%22%3A%22upwaveoptions.com%2Fuser%2Findex.php%22%7D" style="width: 100%; height: 100%; margin: 0 !important; padding: 0 !important;" frameborder="0" allowtransparency="true" scrolling="no" allowfullscreen=""></iframe>
+				</div>
+			</div>
+		</div>
+		<script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
+		<script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+		<script type="text/javascript">
+			$(document).ready(function() {
+				function updateWidgetSize() {
+					var widgetContainer = $('.tradingview-widget-container');
+					var widgetWidth = widgetContainer.width();
+					var widgetHeight = 750; // Set the aspect ratio according to your preference
+					var widgetId = 'technical-analysis';
+
+					if (widgetWidth < 600) {
+						widgetHeight = 700; // Adjust the height for smaller screens
+					}
+
+					var widget = new TradingView.widget({
+						"container_id": widgetId,
+						"width": widgetWidth,
+						"height": widgetHeight,
+						"symbol": "AAPL",
+						"interval": "D",
+						"timezone": "exchange",
+						"theme": "Dark",
+						"style": "1",
+						"toolbar_bg": "#f1f3f6",
+						"withdateranges": true,
+						"hide_side_toolbar": false,
+						"allow_symbol_change": true,
+						"save_image": false,
+						"studies": ["ROC@tv-basicstudies", "StochasticRSI@tv-basicstudies", "MASimple@tv-basicstudies"],
+						"show_popup_button": true,
+						"popup_width": "1000",
+						"popup_height": "650",
+						"locale": "en"
+					});
+				}
+
+				$(window).on('resize', function() {
+					updateWidgetSize();
+				});
+
+				updateWidgetSize();
+			});
+		</script>
+	</div>
+</body>
+</html>

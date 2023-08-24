@@ -1,0 +1,231 @@
+:root{
+    --cadet-blue-crayola: hsl(227, 13%, 73%);
+    --blue-crayola_10: hsla(222, 100%, 61%, 0.05);   
+    --eerie-black-1: hsl(240, 5%, 8%);
+    --eerie-black-2: hsl(228, 9%, 10%);   
+    --blue-crayola: hsl(222, 100%, 61%);
+    --white_50: hsla(0, 0%, 100%, 0.5);
+    --white_30: hsla(0, 0%, 100%, 0.3);
+    --white_10: hsla(0, 0%, 100%, 0.1);
+    --black_10: hsla(0, 0%, 0%, 0.1);
+    --white: hsl(0, 0%, 100%);
+}
+
+body{
+    margin: 0%;
+    font-family: sans-serif;
+    background-color: var(--eerie-black-2);
+    color: white;
+}
+
+#navbar{
+    position: fixed;
+    width: 100%;
+    background-color: var(--eerie-black-1);  
+}
+
+#navbar button{
+    color: white;
+    background-color: var(--eerie-black-1);
+    border-style: none;
+    margin-right: auto;
+    font-size: xx-large;
+    padding: 1%;
+    font-weight: 400;
+}
+
+.sidenav {
+    height: 100%;
+    width: 0;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    background-color: var(--eerie-black-1);
+    overflow-x: hidden;
+    transition: 0.5s;
+    padding-top: 60px;
+    line-height: 1.5;
+}
+
+.sidenav label{
+    color: white;
+}
+
+.sidenav img{
+    margin-bottom: 3%;
+    width: 40%;
+    border-radius: 50%;
+}
+
+.sidenav a {
+    padding: 8px 8px 8px 32px;
+    text-decoration: none;
+    font-size: 22px;
+    color: var(--cadet-blue-crayola);
+    display: block;
+    transition: 0.3s;
+    line-height: 1.5;
+}
+
+.sidenav a:hover {
+    color: #f1f1f1;
+}
+
+.sidenav .closebtn {
+    position: absolute;
+    top: 0;
+    right: 25px;
+    font-size: 36px;
+    margin-left: 50px;
+}
+
+#content{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    padding-top: 100px;
+}
+
+.box{
+    width: 90%;
+    background-color: black;
+    height: fit-content;
+    color: var(--cadet-blue-crayola);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 10%;
+    padding: 2%;
+    border-radius: 8px;
+    line-height: 2;
+}
+
+.header{
+    font-size: x-large;
+    color: white;
+}
+
+#deposit select{
+    padding: 2%;
+    width: 90%;
+    margin-top: 2%;
+    margin-bottom: 7%;
+    background-color: white;
+    color: black;
+}
+
+#deposit input{
+    width: 90%;
+    padding: 2%;
+    margin-top: 2%;
+    margin-bottom: 7%;
+    background-color: white;
+    color: black;
+}
+
+#a{
+    text-align: center;
+    text-decoration: none;
+    border-radius: 50px;
+    background-color: var(--eerie-black-1);
+    color: white;
+    padding: 2%;
+    width: 50%;
+    border-style: none;
+}
+
+#deposit a:active{
+    background-color: black;
+    color: white;
+}
+
+
+table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+	overflow: auto;
+	text-align: center;
+}
+  
+td, th {
+	font-size: 13px;
+    border: 1px solid white;
+    color: white;
+    text-align: left;
+    padding: 5px;
+}
+
+
+/* The Modal (background) */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    padding-top: 100px; /* Location of the box */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+  
+/* Modal Content */
+.modal-content {
+    background-color: black;
+	color: white;
+    margin: auto;
+    padding: 2%;
+    border: 1px solid white;
+    width: 90%;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 20px;
+}
+
+/* The Close Button */
+.close {
+    color: #aaaaaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+	margin-left: auto;
+}
+
+.close:hover, .close:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.modal-content label{
+	width: 60%;
+	background-color: white;
+	color: black;
+	padding: 2%;
+    width: fit-content;
+}
+
+.modal-content button{
+	width: 50%;
+	padding: 2%;
+    background-color: var(--eerie-black-2);
+    color: white;
+    border-radius: 50px;
+    border-style: none;
+}
+
+@media screen and (max-width: 600px) {
+    .modal-content label{padding: 5%;}
+    .modal-content button{padding: 5%;}
+}
+
+.modal-content button:active{
+    background-color: black;
+    color: white;
+}
