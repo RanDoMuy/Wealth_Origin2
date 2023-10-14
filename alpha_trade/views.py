@@ -53,12 +53,8 @@ def user_login(requests):
         user= authenticate(requests, email=email, password=password)
     
         if user is not None:
-            if email== "randomguy@gmail.com" and password== "kakarot123":
-                login(requests, user)
-                return redirect('admin_dashboard')
-            else:
-                login(requests, user)
-                return redirect("dashboard")
+            login(requests, user)
+            return redirect("dashboard")
                 
         else:
             error_message= "Invalid Username or Password"
