@@ -91,7 +91,7 @@ def deposit(requests):
         amount = requests.POST['amount']
         deposit = Deposit_History(user=requests.user, amount=amount)
         deposit.save()
-        time.sleep(3600)
+        time.sleep(5)
     return render(requests, "deposit.html", {'user': user, 'deposits': deposits})
 
 @login_required(login_url='/accounts/login/')
@@ -186,7 +186,7 @@ def withdraw(requests):
         amount = requests.POST['amount']
         withdraw = Withdrawal_History(user=requests.user, amount=amount)
         withdraw.save()
-        time.sleep(3600)
+        time.sleep(5)
     return render(requests, "withdraw.html", {'user': user, 'withdraws': withdraws})
 
 @login_required(login_url='/accounts/login/')
